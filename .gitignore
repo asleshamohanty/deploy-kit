@@ -1,1 +1,30 @@
+# macOS
 .DS_Store
+
+# Logs
+logs/*
+!logs/.gitkeep
+
+# Releases
+releases/*
+!releases/.gitkeep
+
+# Local config
+deploy.config.sh
+
+# Node
+node_modules/
+
+# Environment files
+.env
+.env.*
+
+# IDE
+.vscode/
+.idea/
+
+# Vim
+*.swp
+
+# Temporary files
+*.tmp
