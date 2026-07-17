@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+# deploykit — main entrypoint. Sources every lib, dispatches to a command.
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
+# shellcheck source=/dev/null
+for f in "$ROOT"/lib/*.sh; do source "$f"; done
+# shellcheck source=/dev/null
+for f in "$ROOT"/commands/*.sh; do source "$f"; done
+
+usage() {
+  cat <<EOF
+DeployKit — deployment framework for Node.js apps
+
+Usage:
+  deploykit deploy [--dry-run]   Run the full deploy pipeline
+  deploykit doctor                Full diagnostic report
+  deploykit status                Quick current-state snapshot
+  deploykit logs                  Interactive log viewer
+  deploykit rollback [release]    Roll back to a previous release
+
+Config is read from ./deploy.config.sh (or \$DEPLOYKIT_CONFIG).
+See templates/deploy.config.example.sh to get started.
+EOF
+}
+
+cmd="${1:-}"
+[[ -n "$cmd" ]] && shift || true
+
+case "$cmd" in
+  deploy)   cmd_deploy "$@" ;;
+  doctor)   cmd_doctor "$@" ;;
+  status)   cmd_status "$@" ;;
+  logs)     cmd_logs "$@" ;;
+  rollback) cmd_rollback "$@" ;;
+  ""|help|-h|--help) usage ;;
+  *) err "Unknown command: $cmd"; usage; exit 1 ;;
+esac
