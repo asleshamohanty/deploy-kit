@@ -8,6 +8,7 @@ cmd_doctor() {
   echo "${C_BLUE}DeployKit Doctor — $PROJECT_NAME${C_RESET}"
   echo "----------------------------------------"
 
+# shellcheck disable=SC1091
   printf "%-14s %s\n" "OS" "$(source /etc/os-release 2>/dev/null; echo "${PRETTY_NAME:-unknown}")"
   printf "%-14s %s\n" "Node" "$(node -v 2>/dev/null || echo 'not found')"
   printf "%-14s %s\n" "PM2" "$(pm2_is_healthy && echo Running || echo 'Not running')"

@@ -2,6 +2,7 @@
 # Copy this to deploy.config.sh in your project root (or wherever you run
 # `deploykit` from) and fill in your values. DeployKit loads this file
 # automatically from $PWD, or from $DEPLOYKIT_CONFIG if set.
+# shellcheck disable=SC2034
 
 PROJECT_NAME=my-app
 
