@@ -19,7 +19,8 @@ cmd_logs() {
     3) sudo tail -n 100 /var/log/nginx/access.log ;;
     4) journalctl -u "$PM2_APP" -n 100 --no-pager 2>/dev/null || warn "No systemd unit named $PM2_APP" ;;
     5) pm2 logs "$PM2_APP" ;;
-    6) ls -t "$LOG_DIR"/deploy-*.log 2>/dev/null | head -1 | xargs -r cat ;;
+    6) find "$LOG_DIR" -maxdepth 1 -name 'deploy-*.log' -printf '%T@ %p\n' 2>/dev/null \
+         | sort -rn | head -1 | cut -d' ' -f2- | xargs -r cat ;;
     *) die "Invalid choice." ;;
   esac
 }

@@ -35,7 +35,9 @@ git_pull_and_diff() {
 }
 
 # classify_changes — sets boolean-ish flags based on CHANGED_FILES.
-# Called after git_pull_and_diff.
+# Called after git_pull_and_diff. These globals are read by
+# commands/deploy.sh, which shellcheck can't see across sourced files.
+# shellcheck disable=SC2034
 classify_changes() {
   NEEDS_BACKEND_RESTART=0
   NEEDS_FRONTEND_BUILD=0

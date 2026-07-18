@@ -7,7 +7,8 @@
 #   current -> releases/2026-07-17-1830   (symlink WEBROOT points at)
 
 snapshot_release() {
-  local release_dir="$RELEASES_DIR/$(ts)"
+  local release_dir
+  release_dir="$RELEASES_DIR/$(ts)"
   mkdir -p "$release_dir"
   if [[ -d "$WEBROOT" ]]; then
     cp -a "$WEBROOT/." "$release_dir/" 2>/dev/null || true

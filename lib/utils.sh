@@ -5,6 +5,9 @@
 set -o pipefail
 
 # ---- colors -----------------------------------------------------------
+# Consumed by commands/*.sh — shellcheck can't trace usage across sourced
+# files, so these read as "unused" here even though they aren't.
+# shellcheck disable=SC2034
 if [[ -t 1 ]]; then
   C_RED=$'\033[0;31m'; C_GREEN=$'\033[0;32m'; C_YELLOW=$'\033[0;33m'
   C_BLUE=$'\033[0;34m'; C_DIM=$'\033[2m'; C_RESET=$'\033[0m'
