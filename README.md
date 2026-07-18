@@ -25,6 +25,9 @@ DeployKit isn't designed to hide the deployment process. Every step is
 visible, validated, and logged so you always know what is happening and
 why. The goal is automation without sacrificing transparency.
 
+## How to Use
+See [USAGE.md](USAGE.md) to know how to use this !
+
 ## Features
 
 - Incremental deployments using Git change detection
