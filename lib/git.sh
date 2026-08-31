@@ -6,10 +6,22 @@
 
 git_check_clean() {
   cd "$PROJECT_DIR" || die "Cannot cd into PROJECT_DIR"
-  if [[ -n "$(git status --porcelain)" ]]; then
-    warn "Working tree has local changes:"
-    git status --short
-    confirm "Continue anyway (local changes will remain, untouched by pull)?" || die "Aborted by user."
+
+  local unexpected_changes=()
+
+  while IFS= read -r line; do
+    local path="${line:3}"
+
+    # deploy.config.sh is intentionally server-local and must not be committed.
+    [[ "$path" == "deploy.config.sh" ]] && continue
+
+    unexpected_changes+=("$line")
+  done < <(git status --porcelain)
+
+  if [[ "${#unexpected_changes[@]}" -gt 0 ]]; then
+    warn "Unexpected working tree changes detected:"
+    printf '  %s\n' "${unexpected_changes[@]}"
+    die "Refusing deployment. Production working tree must be clean."
   fi
 }
 
