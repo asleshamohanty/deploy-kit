@@ -51,6 +51,7 @@ git_pull_and_diff() {
 # commands/deploy.sh, which shellcheck can't see across sourced files.
 # shellcheck disable=SC2034
 classify_changes() {
+
   NEEDS_BACKEND_RESTART=0
   NEEDS_FRONTEND_BUILD=0
   NEEDS_NPM_INSTALL_BACKEND=0
@@ -58,15 +59,28 @@ classify_changes() {
   NEEDS_NGINX_RELOAD=0
 
   local f
+
   for f in "${CHANGED_FILES[@]}"; do
     case "$f" in
-      "backend/${BACKEND_LOCKFILE}") NEEDS_NPM_INSTALL_BACKEND=1; NEEDS_BACKEND_RESTART=1 ;;
-      "frontend/${FRONTEND_LOCKFILE}") NEEDS_NPM_INSTALL_FRONTEND=1; NEEDS_FRONTEND_BUILD=1 ;;
-      backend/*) NEEDS_BACKEND_RESTART=1 ;;
-      frontend/*) NEEDS_FRONTEND_BUILD=1 ;;
-      templates/nginx.conf|*.nginx.conf) NEEDS_NGINX_RELOAD=1 ;;
-      README*|docs/*|*.md) : ;; # explicitly a no-op, matches spec
-      *) : ;; # unrecognized paths: no action, but still logged
+      "$BACKEND_LOCKFILE"|"frontend/$FRONTEND_LOCKFILE"|"backend/$BACKEND_LOCKFILE")
+        NEEDS_NPM_INSTALL_BACKEND=1
+        NEEDS_NPM_INSTALL_FRONTEND=1
+        NEEDS_BACKEND_RESTART=1
+        NEEDS_FRONTEND_BUILD=1
+        ;;
+      backend/*)
+        NEEDS_BACKEND_RESTART=1
+        ;;
+      frontend/*)
+        NEEDS_FRONTEND_BUILD=1
+        ;;
+      templates/nginx.conf|*.nginx.conf)
+        NEEDS_NGINX_RELOAD=1
+        ;;
+      README*|docs/*|*.md)
+        : ;;
+      *)
+        : ;;
     esac
   done
 }
