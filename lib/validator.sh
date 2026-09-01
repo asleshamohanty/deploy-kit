@@ -7,8 +7,7 @@ preflight_check() {
 
   require_cmd git
   require_cmd node
-  require_cmd npm
-  require_cmd pm2
+  require_cmd pnpm
   require_cmd curl
 
   [[ -d "$PROJECT_DIR" ]] || { err "PROJECT_DIR missing: $PROJECT_DIR"; ((failures++)); }
